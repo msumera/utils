@@ -261,3 +261,57 @@ func TestDistinct(t *testing.T) {
 		})
 	}
 }
+
+func TestListEqual(t *testing.T) {
+	tests := []struct {
+		name     string
+		a, b     []int
+		expected bool
+	}{
+		{
+			name:     "both empty",
+			a:        []int{},
+			b:        []int{},
+			expected: true,
+		},
+		{
+			name:     "equal slices",
+			a:        []int{1, 2, 3},
+			b:        []int{1, 2, 3},
+			expected: true,
+		},
+		{
+			name:     "different lengths",
+			a:        []int{1, 2},
+			b:        []int{1, 2, 3},
+			expected: false,
+		},
+		{
+			name:     "same length, different elements",
+			a:        []int{1, 2, 3},
+			b:        []int{1, 2, 4},
+			expected: false,
+		},
+		{
+			name:     "nil slices are equal",
+			a:        nil,
+			b:        nil,
+			expected: true,
+		},
+		{
+			name:     "nil vs empty slice",
+			a:        nil,
+			b:        []int{},
+			expected: true, // some people expect this to be true, some false — depends on your interpretation
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := ListEqual(tt.a, tt.b)
+			if result != tt.expected {
+				t.Errorf("ListEqual(%v, %v) = %v; want %v", tt.a, tt.b, result, tt.expected)
+			}
+		})
+	}
+}

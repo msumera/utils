@@ -50,8 +50,8 @@ func ToMap[T any, K comparable](list []T, fn func(T) K) map[K][]T {
 	return result
 }
 
-func Distinct[T any](list []T) []T {
-	seen := make(map[any]struct{})
+func Distinct[T comparable](list []T) []T {
+	seen := make(map[T]struct{})
 	result := make([]T, 0)
 	for _, t := range list {
 		if _, ok := seen[t]; !ok {
@@ -60,4 +60,16 @@ func Distinct[T any](list []T) []T {
 		}
 	}
 	return result
+}
+
+func ListEqual[T comparable](a, b []T) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
 }
