@@ -49,3 +49,15 @@ func ToMap[T any, K comparable](list []T, fn func(T) K) map[K][]T {
 	}
 	return result
 }
+
+func Distinct[T any](list []T) []T {
+	seen := make(map[any]struct{})
+	result := make([]T, 0)
+	for _, t := range list {
+		if _, ok := seen[t]; !ok {
+			seen[t] = struct{}{}
+			result = append(result, t)
+		}
+	}
+	return result
+}

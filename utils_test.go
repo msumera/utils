@@ -220,3 +220,44 @@ func TestToMap(t *testing.T) {
 		})
 	}
 }
+
+func TestDistinct(t *testing.T) {
+	type args[T any] struct {
+		list []T
+	}
+	type testCase[T any] struct {
+		name string
+		args args[T]
+		want []T
+	}
+	tests := []testCase[string]{
+		{
+			name: "1",
+			args: struct {
+				list []string
+			}{list: []string{"xd", "xdd", "xddd", "aa"}},
+			want: []string{"xd", "xdd", "xddd", "aa"},
+		},
+		{
+			name: "2",
+			args: struct {
+				list []string
+			}{list: []string{"xd", "xdd", "xddd", "xd"}},
+			want: []string{"xd", "xdd", "xddd"},
+		},
+		{
+			name: "3",
+			args: struct {
+				list []string
+			}{list: []string{"xd", "xd", "xd"}},
+			want: []string{"xd"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Distinct(tt.args.list); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Distinct() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
